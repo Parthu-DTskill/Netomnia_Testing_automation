@@ -1,0 +1,73 @@
+# ===============================
+# Python
+# ===============================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# ===============================
+# Virtual Environments
+# ===============================
+.venv/
+venv/
+env/
+ENV/
+
+# ===============================
+# Environment Variables
+# ===============================
+.env
+.env.*
+
+# ===============================
+# OS / Editor Files
+# ===============================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ===============================
+# Logs
+# ===============================
+*.log
+
+# ===============================
+# Media / Generated Files
+# ===============================
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.gif
+*.webp
+*.tiff
+
+*.pdf
+*.pptx
+*.ppt
+
+# ===============================
+# Temporary / Output Folders
+# ===============================
+output_images/
+raw_images/
+unique_images/
+compressed_images/
+downloads/
+temp/
+tmp/
+
+# ===============================
+# Selenium / Browser
+# ===============================
+chromedriver*
+geckodriver*
+msedgedriver*
+
+# ===============================
+# OS Specific
+# ===============================
+*.swp
+*.tmp
