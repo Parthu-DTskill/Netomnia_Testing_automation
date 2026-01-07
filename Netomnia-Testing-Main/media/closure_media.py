@@ -1,7 +1,7 @@
 import os
 import time
 import requests
-from core.utils import convert_pdf_to_images, convert_pptx_to_images
+#from core.utils import convert_pdf_to_images, convert_pptx_to_images
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -9,12 +9,48 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from variables import (
     POWER_BLOCK, POWER_HEADER, POWER_IMAGES,
-    CARDS_PATH, DOC_PATH, DOWNLOAD_PATH
 )
+from core.pdf_image_extract import extract_images_from_pdf
+from core.image_dedupe import remove_duplicates
+from core.image_compress import compress_and_save_images
 from .base_media import BaseMedia
+from core.pdf_media_processor import process_pdf_media
 
 
 class ClosureMedia(BaseMedia):
+
+    def process_pdf_or_pptx(self, file_path, excel_folder, base_name):
+        raw_dir = os.path.join(excel_folder, base_name, "raw")
+        unique_dir = os.path.join(excel_folder, base_name, "unique")
+        final_dir = os.path.join(excel_folder, base_name, "compressed")
+
+        os.makedirs(raw_dir, exist_ok=True)
+        os.makedirs(unique_dir, exist_ok=True)
+        os.makedirs(final_dir, exist_ok=True)
+
+        # Extract embedded images
+        extracted = extract_images_from_pdf(
+            pdf_path=file_path,
+            output_dir=raw_dir,
+            base_name=base_name
+        )
+
+        if not extracted:
+            return []
+
+        # Remove duplicates
+        remove_duplicates(raw_dir, unique_dir)
+
+        # Compress images
+        compressed_files, _ = compress_and_save_images(
+            input_folder=unique_dir,
+            output_folder=final_dir,
+            max_size_kb=300,
+            max_workers=4
+        )
+
+        return compressed_files
+
 
     def download_power_meter_images(self, feature_id, excel_folder, code_value):
         wait = WebDriverWait(self.driver, 25)
@@ -164,22 +200,11 @@ class ClosureMedia(BaseMedia):
                     with open(file_path, "wb") as f:
                         f.write(content)
 
-                    if is_pdf:
-                        convert_pdf_to_images(
-                            pdf_path=file_path,
-                            output_dir=excel_folder,
-                            base_name=f"{code_value}_{feature_id}_{counter}"
-                        )
-
-                    elif is_pptx:
-                        try:
-                            convert_pptx_to_images(
-                                pptx_path=file_path,
-                                output_dir=excel_folder,
-                                base_name=f"{code_value}_{feature_id}_{counter}"
-                            )
-                        except:
-                            pass
+                    self.process_pdf_or_pptx(
+                        file_path=file_path,
+                        excel_folder=excel_folder,
+                        base_name=f"{code_value}_{feature_id}_{counter}"
+                    )  
 
                     counter += 1
 
