@@ -32,7 +32,6 @@ try:
         grouped=True
     )
 
-    # data = fetch_dummy_data(base_url=BASE_URL)
 
     # for row in data:
     #     kind = row.get("kind")
