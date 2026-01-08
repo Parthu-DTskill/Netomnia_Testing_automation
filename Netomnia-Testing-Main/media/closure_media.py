@@ -14,7 +14,6 @@ from core.pdf_image_extract import extract_images_from_pdf
 from core.image_dedupe import remove_duplicates
 from core.image_compress import compress_and_save_images
 from .base_media import BaseMedia
-from core.pdf_media_processor import process_pdf_media
 
 
 class ClosureMedia(BaseMedia):

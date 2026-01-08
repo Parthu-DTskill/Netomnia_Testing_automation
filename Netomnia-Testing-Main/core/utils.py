@@ -64,40 +64,20 @@ def safe_scroll_into_view(driver, element):
     )
     time.sleep(0.3)
 
-def convert_pdf_to_images(pdf_path, output_dir, base_name, dpi=300):
-    os.makedirs(output_dir, exist_ok=True)
-    poppler_path = os.environ.get("POPPLER_PATH")  
+SOFFICE_PATH = os.environ.get("LIBREOFFICE_PATH")
 
 
-    try:
-        images = convert_from_path(
-            pdf_path,
-            dpi=dpi,
-            fmt="jpeg",
-            poppler_path=poppler_path if poppler_path else None,
-        )
-    except PDFInfoNotInstalledError:
-        print("[WARN] Poppler not installed")
-        return []
-    except Exception as e:
-        print(f"[WARN] PDF conversion failed: {e}")
-        return []
+def convert_pptx_to_pdf(pptx_path):
+    """
+    Convert PPTX → PDF using LibreOffice.
+    Returns generated PDF path or None.
+    """
 
-    paths = []
-    for i, img in enumerate(images, 1):
-        path = os.path.join(output_dir, f"{base_name}_page_{i}.jpg")
-        img.save(path, "JPEG")
-        paths.append(path)
-
-    return paths
-
-
-SOFFICE_PATH = os.environ["LIBREOFFICE_PATH"]
-
-
-def convert_pptx_to_images(pptx_path, output_dir, base_name, dpi=150):
     if not os.path.isfile(pptx_path):
         raise FileNotFoundError(pptx_path)
+
+    if not SOFFICE_PATH:
+        raise EnvironmentError("LIBREOFFICE_PATH not set")
 
     work_dir = tempfile.mkdtemp(prefix="libreoffice_work_")
     profile_dir = tempfile.mkdtemp(prefix="libreoffice_profile_")
@@ -134,16 +114,10 @@ def convert_pptx_to_images(pptx_path, output_dir, base_name, dpi=150):
         )
 
         if not os.path.isfile(pdf_path):
-            print(f"[WARN] LibreOffice did not generate PDF for: {pptx_path}")
-            return []
+            print(f"[WARN] PPTX → PDF failed: {pptx_path}")
+            return None
 
-        return convert_pdf_to_images(
-            pdf_path=pdf_path,
-            output_dir=output_dir,
-            base_name=base_name,
-            dpi=dpi,
-        )
+        return pdf_path
 
     finally:
-        safe_rmtree(work_dir)
         safe_rmtree(profile_dir)
