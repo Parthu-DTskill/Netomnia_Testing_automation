@@ -14,7 +14,7 @@ from core.pdf_image_extract import extract_images_from_pdf
 from core.image_dedupe import remove_duplicates
 from core.image_compress import compress_and_save_images
 from .base_media import BaseMedia
-
+from core.media_processor import process_document
 
 class ClosureMedia(BaseMedia):
 
@@ -199,10 +199,10 @@ class ClosureMedia(BaseMedia):
                     with open(file_path, "wb") as f:
                         f.write(content)
 
-                    self.process_pdf_or_pptx(
+                    process_document(
                         file_path=file_path,
-                        excel_folder=excel_folder,
-                        base_name=f"{code_value}_{feature_id}_{counter}"
+                        feature_folder=excel_folder,
+                        base_name=f"{code_value}_{feature_id}_{counter}",
                     )  
 
                     counter += 1

@@ -67,12 +67,10 @@ def process_document(file_path, feature_folder, base_name):
     os.makedirs(final_dir, exist_ok=True)
 
     ext = os.path.splitext(file_path)[1].lower()
-    print("[DEBUG] detected extension =", ext)
 
     extracted = []
 
     if ext == ".pdf":
-        print("[DEBUG] Entering PDF branch")
         extracted = extract_images_from_pdf(
             pdf_path=file_path,
             output_dir=raw_dir,
@@ -80,7 +78,6 @@ def process_document(file_path, feature_folder, base_name):
         )
 
     elif ext == ".pptx":
-        print("[DEBUG] Entering PPTX branch")
         extracted = extract_images_from_pptx(
             pptx_path=file_path,
             output_dir=raw_dir,
@@ -88,10 +85,8 @@ def process_document(file_path, feature_folder, base_name):
         )
 
     else:
-        print("[ERROR] Unsupported file type:", file_path)
         return []
 
-    print("[DEBUG] extracted images =", extracted)
 
     if not extracted:
         print(f"[INFO] No images extracted from {file_path}")
