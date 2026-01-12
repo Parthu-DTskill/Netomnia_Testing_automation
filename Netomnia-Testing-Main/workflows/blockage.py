@@ -27,7 +27,9 @@ from .base_workflow import BaseWorkflow
 class BlockageWorkflow(BaseWorkflow):
 
     def run(self):
+
         media = ClosureMedia(self.driver)
+        self.output_paths = []
 
         # with open(self.json_path, "r") as f:
         #     rows = json.load(f)
@@ -43,6 +45,16 @@ class BlockageWorkflow(BaseWorkflow):
         )
         self.driver.execute_script("arguments[0].click();", features_tab)
 
+        # Click "Clear Search" button to reset everything
+        try:
+            clear_search_btn = wait.until(
+                EC.element_to_be_clickable((By.XPATH, "//button[contains(., 'Clear Search')]"))
+            )
+            self.driver.execute_script("arguments[0].click();", clear_search_btn)
+            time.sleep(1)
+            print("[INFO] Clicked Clear Search button")
+        except:
+            print("[INFO] Clear Search button not found or not needed")
 
         dropdown_panel = wait.until(EC.presence_of_element_located((By.XPATH, ABS_XPATH)))
         dropdown_panel.click()
@@ -104,7 +116,13 @@ class BlockageWorkflow(BaseWorkflow):
                 self.rejections.add(feature_id,code,"Missing or invalid Siebel / Whereabouts")
                 continue      
 
-            media.download_closure_media(feature_id, folder, code)
+            paths = media.download_closure_media(feature_id, folder, code)
+            
+            if paths:
+                if isinstance(paths, list):
+                    self.output_paths.extend(paths)
+                else:
+                    self.output_paths.append(paths)
 
             self.driver.switch_to.active_element.send_keys(Keys.ESCAPE)
             time.sleep(1)

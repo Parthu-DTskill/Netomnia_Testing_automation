@@ -88,3 +88,14 @@ SELECT_DROPDOWN_SELECTOR = (
 # FEATURE ID INVALID
 
 FEATURE_ID_INVALID = "//span[contains(text(),'no data found, verify that the feature and id exis')]"
+
+# SUPPORTED CODES
+
+CLOSURE_CODES = {
+    "TST003", "CBT003", "CBT004", "CBT001",
+    "H&D147", "MBR001", "JNT001", "JNT004", "TST002"
+}
+
+BLOCKAGE_CODES = {
+    "H&D125", "H&D126"
+}

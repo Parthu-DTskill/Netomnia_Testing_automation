@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 class BaseMedia:
     def __init__(self, driver):
         self.driver = driver
+        self.saved_paths = []
 
     def session_get(self, url, timeout=30):
         try:

@@ -85,7 +85,11 @@ class ClosureMedia(BaseMedia):
             with open(file_path, "wb") as f:
                 f.write(r.content)
 
+            self.saved_paths.append(file_path)  # STORE PATH
+
             count += 1
+    
+        return self.saved_paths
 
     ALLOWED_DOC_EXTS = {".pdf", ".pptx"}
 
@@ -138,6 +142,9 @@ class ClosureMedia(BaseMedia):
 
                     with open(img_path, "wb") as f:
                         f.write(r.content)
+
+                    self.saved_paths.append(img_path)  # STORE PATH
+
 
                     counter += 1
                     continue
@@ -199,6 +206,8 @@ class ClosureMedia(BaseMedia):
                     with open(file_path, "wb") as f:
                         f.write(content)
 
+                    self.saved_paths.append(file_path)  # STORE PATH
+
                     process_document(
                         file_path=file_path,
                         feature_folder=excel_folder,
@@ -211,6 +220,8 @@ class ClosureMedia(BaseMedia):
 
             except (NoSuchElementException, TimeoutException):
                 pass
+        
+        return self.saved_paths
 
     def download_all_media(self, feature_id, excel_folder, code_value):
         return self.download_closure_media(feature_id, excel_folder, code_value)

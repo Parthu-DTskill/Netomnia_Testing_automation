@@ -1,4 +1,5 @@
 class RejectionCollector:
+
     def __init__(self):
         self.items = []
 
@@ -8,6 +9,9 @@ class RejectionCollector:
             "code": code,
             "reason": reason
         })
+
+    def to_list(self):
+        return self.items
 
     def print_all(self):
         if not self.items:
