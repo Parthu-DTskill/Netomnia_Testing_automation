@@ -1,27 +1,18 @@
-import json
 import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
-from core.utils import scroll_drawer_until_visible
-from core.utils import get_text_or_empty
-from core.api import fetch_dummy_data
+from .base_workflow import BaseWorkflow
+from media.closure_media import ClosureMedia
+from conditions import validate_build_status, validate_siebel_and_whereabouts
 from variables import (
     FEATURE_ID_INVALID,
-    FEATURES_TAB,
-    SELECT_DROPDOWN_SELECTOR,
     BLOCKAGE_OPTION,
     FEATURE_ID_INPUT,
     EYE_BUTTON,
     BUILD_STATUS,
-    ABS_XPATH,
 )
-
-from conditions import validate_build_status, validate_siebel_and_whereabouts
-from media.closure_media import ClosureMedia
-from .base_workflow import BaseWorkflow
 
 
 class BlockageWorkflow(BaseWorkflow):
@@ -30,44 +21,14 @@ class BlockageWorkflow(BaseWorkflow):
 
         media = ClosureMedia(self.driver)
         self.output_paths = []
-
-        # with open(self.json_path, "r") as f:
-        #     rows = json.load(f)
         rows = self.rows
 
         if isinstance(rows, dict):
             rows = [rows]
 
+        self.open_feature_type(BLOCKAGE_OPTION)
+
         wait = WebDriverWait(self.driver, 20)
-
-        features_tab = wait.until(
-            EC.presence_of_element_located((By.XPATH, FEATURES_TAB))
-        )
-        self.driver.execute_script("arguments[0].click();", features_tab)
-
-        # Click "Clear Search" button to reset everything
-        try:
-            clear_search_btn = wait.until(
-                EC.element_to_be_clickable((By.XPATH, "//button[contains(., 'Clear Search')]"))
-            )
-            self.driver.execute_script("arguments[0].click();", clear_search_btn)
-            time.sleep(1)
-            print("[INFO] Clicked Clear Search button")
-        except:
-            print("[INFO] Clear Search button not found or not needed")
-
-        dropdown_panel = wait.until(EC.presence_of_element_located((By.XPATH, ABS_XPATH)))
-        dropdown_panel.click()
-
-
-        time.sleep(1)
-
-        option = wait.until(
-            EC.presence_of_element_located((By.XPATH, BLOCKAGE_OPTION))
-        )
-        self.driver.execute_script("arguments[0].click();", option)
-
-        # self.select_feature_type(BLOCKAGE_OPTION)
 
         for row in rows:
             feature_id = int(row["Feature ID"])
@@ -83,16 +44,7 @@ class BlockageWorkflow(BaseWorkflow):
             except Exception:
                 self.rejections.add(feature_id,code,"Feature ID input failed")
                 continue
-
-
-            # field = wait.until(
-            #     EC.visibility_of_element_located((By.XPATH, FEATURE_ID_INPUT))
-            # )
-            # field.send_keys(Keys.CONTROL, "a")
-            # field.send_keys(Keys.DELETE)
-            # field.send_keys(str(feature_id))
-            # field.send_keys(Keys.ENTER)
-            
+           
             time.sleep(2)
 
             if self.driver.find_elements(By.XPATH, FEATURE_ID_INVALID):
@@ -102,10 +54,7 @@ class BlockageWorkflow(BaseWorkflow):
             eye = wait.until(EC.presence_of_element_located((By.XPATH, EYE_BUTTON)))
             self.driver.execute_script("arguments[0].click();", eye)
 
-
-            wait.until(
-                EC.visibility_of_element_located((By.XPATH, BUILD_STATUS))
-            )
+            wait.until(EC.visibility_of_element_located((By.XPATH, BUILD_STATUS)))
 
             if validate_build_status(self.driver) < 7:
                 self.rejections.add(feature_id,code,"Build status < 7")

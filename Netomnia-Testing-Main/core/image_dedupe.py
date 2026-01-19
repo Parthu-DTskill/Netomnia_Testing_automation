@@ -3,7 +3,6 @@ import shutil
 import hashlib
 from PIL import Image
 import imagehash
-from itertools import combinations
 
 PHASH_THRESHOLD = 8
 
@@ -14,6 +13,7 @@ def md5(path):
 
 
 def remove_duplicates(input_dir, output_dir):
+    
     os.makedirs(output_dir, exist_ok=True)
 
     files = [

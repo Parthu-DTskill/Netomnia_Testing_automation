@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import List, Optional, Tuple
 from dataclasses import dataclass
 from concurrent.futures import ThreadPoolExecutor, as_completed
-
 from PIL import Image
 
 logging.basicConfig(level=logging.INFO)

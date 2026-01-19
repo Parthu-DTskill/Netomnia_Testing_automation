@@ -1,10 +1,11 @@
 import time
+from variables import LOGIN_BUTTON, smart_find_element
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from variables import LOGIN_BUTTON, smart_find_element
 
 class Login:
+
     def __init__(self, driver, url, username, password):
         self.driver = driver
         self.url = url
@@ -26,6 +27,4 @@ class Login:
             pwd.clear()
             pwd.send_keys(self.password)
 
-        WebDriverWait(self.driver, 20).until(
-            EC.element_to_be_clickable((By.XPATH, LOGIN_BUTTON))
-        ).click()
+        WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.XPATH, LOGIN_BUTTON))).click()

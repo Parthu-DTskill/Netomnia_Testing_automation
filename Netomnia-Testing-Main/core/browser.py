@@ -1,12 +1,12 @@
+import os
 import tempfile
 import shutil
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-
 class Browser:
     @staticmethod
-    def create(headless=False):
+    def create(headless=True):
         options = Options()
 
         options.add_argument("--no-sandbox")
@@ -17,6 +17,10 @@ class Browser:
         options.add_argument("--disable-sync")
         options.add_argument("--disable-default-apps")
         options.add_argument("--disable-popup-blocking")
+        options.add_argument("--log-level=3")
+        options.add_experimental_option("excludeSwitches", ["enable-logging"])
+        options.add_argument("--remote-debugging-port=0")
+
 
         if headless:
             options.add_argument("--headless=new")

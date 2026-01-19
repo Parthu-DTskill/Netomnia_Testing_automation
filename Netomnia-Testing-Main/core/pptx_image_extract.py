@@ -12,20 +12,16 @@ def extract_images_from_pptx(pptx_path, output_dir, prefix="pptx_image"):
     os.makedirs(output_dir, exist_ok=True)
 
     prs = Presentation(pptx_path)
-    print(f"[PPTX] Opened file: {pptx_path}")
 
     extracted_files = []
     seen_hashes = set()
     counter = 1
 
     for slide_index, slide in enumerate(prs.slides, 1):
-        print(f"[PPTX] Slide {slide_index} has {len(slide.shapes)} shapes")
 
         for shape in slide.shapes:
             if shape.shape_type != MSO_SHAPE_TYPE.PICTURE:
                 continue
-
-            print(f"[PPTX] Found IMAGE on slide {slide_index}")
 
             image_bytes = shape.image.blob
             image_hash = hashlib.md5(image_bytes).hexdigest()
@@ -44,5 +40,4 @@ def extract_images_from_pptx(pptx_path, output_dir, prefix="pptx_image"):
             extracted_files.append(output_path)
             counter += 1
 
-    print(f"[PPTX] Total images extracted: {len(extracted_files)}")
     return extracted_files

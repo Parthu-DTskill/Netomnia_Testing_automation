@@ -28,6 +28,9 @@ def smart_find_element(driver, keywords, tag="*"):
     except:
         return None
 
+# SUPPORTED CODES
+CLOSURE_CODES = {"TST003", "CBT003", "CBT004", "CBT001","H&D147", "MBR001", "JNT001", "JNT004", "TST002"}
+BLOCKAGE_CODES = {"H&D125", "H&D126"}
 
 # LOGIN PAGE
 LOGIN_BUTTON = "//button[@class='bp5-button bp5-intent-primary bp5-large']"
@@ -40,32 +43,22 @@ HAMBURGER_BUTTON = "//button[contains(@class,'floatingSidebarButtonNoTabs')]"
 LAYERS_TAB = "//button[contains(., 'Layers')]"
 BUILD_LAYER_LABEL = "//label[normalize-space()='Build']"
 
-# POWER METER BLOCK
-POWER_BLOCK = "//*[contains(normalize-space(.),'POWER_METER')]/ancestor::div[contains(@class,'ant-collapse-item')]"
-POWER_HEADER = ".//div[contains(@class,'ant-collapse-header')]"
-POWER_IMAGES = ".//div[contains(@class,'ant-collapse-content-active')]//img"
-
 # FEATURE SECTION
 FEATURES_TAB = "//button[contains(., 'Features')]"
 FEATURE_ID_INPUT = "//input[@placeholder='Feature ID']"
-FEATURE_SEARCH = "/html[1]/body[1]/div[1]/div[2]/div[2]/div[1]/main[1]/div[2]/div[1]/div[3]/div[2]/div[1]/div[1]/div[2]/span[1]/span[1]/span[1]/button[1]/span[1]/span[1]/*[name()='svg'][1]"
+
+# FEATURE ID INVALID
+FEATURE_ID_INVALID = "//span[contains(text(),'no data found, verify that the feature and id exis')]"
+
+# CLEAR SEARCH BUTTON
+CLEAR_SEARCH_BUTTON = "//button[contains(., 'Clear Search')]"
 
 # DROPDOWN
-DROPDOWN_INPUT = "//div[contains(@class,'ant-select-selector')]"
-INDEX_XPATH = "(//div[@class='ant-select ant-select-outlined css-kbg4zp ant-select-single ant-select-show-arrow'])[2]"
 ABS_XPATH = "/html[1]/body[1]/div[1]/div[2]/div[2]/div[1]/main[1]/div[2]/div[1]/div[3]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/span[1]/span[1]/input[1]"
-FEATURE_TYPE_DROPDOWN = "//div[contains(@class,'ant-select-selector')]"
-FEATURES_PANEL = "//div[contains(@class,'ant-drawer-body')]"
-
 
 # CATEGORIES
 CLOSURE_OPTION = "//div[@class='ant-select-item-option-content' and normalize-space()='closure']"
 BLOCKAGE_OPTION = "//div[@class='ant-select-item-option-content'][normalize-space()='blockage']"
-
-# SIEBEL REFERENCE & WHEREABOUTS
-SHOW_MORE_BTN = "//div[@id='bp5-tab-panel_undefined_RecordDetails']//span[@class='bp5-button-text'][normalize-space()='Show More']"
-SIEBEL_REF_VALUE = "//th[.//span[normalize-space()='Siebel Reference']]/following-sibling::td//span[normalize-space()]"
-WHEREABOUTS_VALUE = "//th[.//span[normalize-space()='Whereabouts']]/following-sibling::td//span[normalize-space()]"
 
 # EYE ICON
 EYE_BUTTON = "//span[@aria-label='eye' or @aria-describedby]"
@@ -73,29 +66,35 @@ EYE_BUTTON = "//span[@aria-label='eye' or @aria-describedby]"
 # BUILD STATUS
 BUILD_STATUS = "//span[normalize-space()='Build Status']/ancestor::tr/td//span"
 
-# MEDIA CARDS
-CARDS_PATH = ".//div[contains(@class,'filePreviewCard')]"
+# SIEBEL REFERENCE & WHEREABOUTS
+SHOW_MORE_BTN = "//div[@id='bp5-tab-panel_undefined_RecordDetails']//span[@class='bp5-button-text'][normalize-space()='Show More']"
+SIEBEL_REF_VALUE = "//th[.//span[normalize-space()='Siebel Reference']]/following-sibling::td//span[normalize-space()]"
+WHEREABOUTS_VALUE = "//th[.//span[normalize-space()='Whereabouts']]/following-sibling::td//span[normalize-space()]"
 
-# DOCUMENT MENU
+# POWER METER BLOCK
+POWER_BLOCK = "//*[contains(normalize-space(.),'POWER_METER')]/ancestor::div[contains(@class,'ant-collapse-item')]"
+POWER_HEADER = ".//div[contains(@class,'ant-collapse-header')]"
+POWER_IMAGES = ".//div[contains(@class,'ant-collapse-content-active')]//img"
+
+# CLOSURE MEDIA DOWNLOAD
+SHOW_MORE_DROP = "//button[.//span[normalize-space()='Show more']]"
+CARDS_PATH = "//div[contains(@class,'filePreviewCard')]"
+IMAGE_PATH = ".//img[contains(@class,'ant-image-img')]"
 DOC_PATH = ".//button[contains(@class,'ant-dropdown-trigger')]"
-
-# DOWNLOAD LINK
-DOWNLOAD_PATH = "//li[contains(@class,'ant-dropdown-menu-item')]//a[@download]"
-SELECT_DROPDOWN_SELECTOR = (
-    "//span[contains(@class,'ant-select-selection-item')]"
+LINKS_XPATH = (
+    "//div[contains(@class,'ant-dropdown') and not(contains(@style,'display: none'))]"
+    "//a[contains(@href,'http')]"
 )
 
-# FEATURE ID INVALID
+# OTDR BLOCK
+OTDR_BLOCK_PATH = (
+    "//*[contains(@class,'ant-collapse-item')]"
+    "[.//span[contains(normalize-space(),'File (OTDR)')]]"
+)
 
-FEATURE_ID_INVALID = "//span[contains(text(),'no data found, verify that the feature and id exis')]"
+OTDR_HEADER = ".//div[contains(@class,'ant-collapse-header')]"
 
-# SUPPORTED CODES
-
-CLOSURE_CODES = {
-    "TST003", "CBT003", "CBT004", "CBT001",
-    "H&D147", "MBR001", "JNT001", "JNT004", "TST002"
-}
-
-BLOCKAGE_CODES = {
-    "H&D125", "H&D126"
-}
+PDF_CARDS = (
+    ".//div[contains(@class,'filePreviewCard')]"
+    "[.//i[contains(@class,'bi-filetype-pdf')]]"
+)

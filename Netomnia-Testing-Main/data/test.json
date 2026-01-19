@@ -1,0 +1,38 @@
+[
+    {
+        "Assessor": "TECHM",
+        "Contractor": "mjq",
+        "Contractor AFP ref": "DRAFT",
+        "Purchase Order ID": "PO-021605",
+        "Region": "Wales",
+        "Town": "CARDIFF",
+        "Polygon Type": "FN",
+        "Polygon ID": 293625,
+        "Feature ID": 183640,
+        "Build Status": 7,
+        "code": "TST003",
+        "item": "Test Equipment Type 3",
+        "unit": "Per Test",
+        "price": 85.00,
+        "quantity": 18,
+        "total": 85.00
+    },
+    {
+        "Assessor": "TECHM",
+        "Contractor": "mjq",
+        "Contractor AFP ref": "DRAFT",
+        "Purchase Order ID": "PO-021605",
+        "Region": "Wales",
+        "Town": "CARDIFF",
+        "Polygon Type": "FN",
+        "Polygon ID": 293625,
+        "Feature ID": 223167,
+        "Build Status": 7,
+        "code": "TST002",
+        "item": "Test Equipment Type 3",
+        "unit": "Per Test",
+        "price": 85.00,
+        "quantity": 18,
+        "total": 85.00
+    }
+]
